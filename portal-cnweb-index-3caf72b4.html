@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷速 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f6f8;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1.5rem 3rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 标题 + 说明区 */
+        .hero-section {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 2rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0f172a;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero-section .subhead {
+            font-size: 1rem;
+            color: #475569;
+            background: #eef2f6;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-weight: 450;
+        }
+
+        .hero-description {
+            margin-top: 1.4rem;
+            font-size: 1rem;
+            color: #334155;
+            max-width: 780px;
+        }
+
+        .hero-description a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #94a3b8;
+            transition: border-color 0.15s;
+        }
+
+        .hero-description a:hover {
+            border-bottom-color: #2563eb;
+        }
+
+        /* 目录感网格 */
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0 2.2rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e9edf2;
+            padding: 1.6rem 1.5rem 1.8rem;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.9rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card h3 span {
+            background: #e2e8f0;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.05rem 0.6rem;
+            border-radius: 12px;
+            color: #475569;
+            letter-spacing: 0.3px;
+        }
+
+        .card p, .card li {
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            padding: 0.35rem 0 0.35rem 1.4rem;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .card .pill {
+            background: #f1f5f9;
+            border-radius: 30px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: #334155;
+        }
+
+        .highlight-link-card {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .highlight-link-card a {
+            color: #1e293b;
+            text-decoration: none;
+            font-weight: 600;
+            background: #eef2f6;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            transition: background 0.15s;
+        }
+
+        .highlight-link-card a:hover {
+            background: #dce3ec;
+        }
+
+        /* 提示区 */
+        .notice-area {
+            background: #f0f3f7;
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            margin: 1.8rem 0 2rem;
+            border-left: 4px solid #94a3b8;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 1rem 2rem;
+        }
+
+        .notice-area .icon-label {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+        }
+
+        .notice-area .notice-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #1e293b;
+            min-width: 200px;
+        }
+
+        .notice-area .notice-text a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #94a3b8;
+        }
+
+        .notice-area .notice-text a:hover {
+            border-bottom-color: #2563eb;
+        }
+
+        /* 相关信息区 */
+        .info-section {
+            margin: 2.2rem 0 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .info-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .info-col h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.01em;
+        }
+
+        .info-col ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-col ul li {
+            padding: 0.3rem 0;
+            font-size: 0.92rem;
+            color: #475569;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .info-col ul li:last-child {
+            border-bottom: none;
+        }
+
+        .faq-snippet {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e9edf2;
+            margin-top: 0.3rem;
+        }
+
+        .faq-snippet p {
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        .faq-snippet .faq-q {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .tagline {
+            margin-top: 2.8rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+        }
+
+        .tagline a {
+            color: #475569;
+            text-decoration: none;
+            border-bottom: 1px dotted #94a3b8;
+        }
+
+        .tagline a:hover {
+            color: #2563eb;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 1rem 2rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.6rem;
+            }
+
+            .directory-grid {
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1.4rem 1.2rem;
+            }
+
+            .notice-area {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .info-section {
+                flex-direction: column;
+                gap: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+
+    <!-- hero + 说明区 -->
+    <div class="hero-section">
+        <h1>雷速 · 简明指南</h1>
+        <div class="subhead">知识库入口式 · 日常访问提醒</div>
+        <div class="hero-description">
+            这里整理了一些关于 <a href="https://portal-cnweb-leisu.com">雷速</a> 的基础使用思路、常见疑问和访问备忘。如果你刚开始接触，下面的卡片可以帮你快速了解它的大致方向。页面内容偏向生活化备忘，但也保留了一份正式页面的骨架感。
+        </div>
+    </div>
+
+    <!-- 目录感卡片布局 -->
+    <div class="directory-grid">
+        <div class="card">
+            <h3>📚 快速认识 <span>指南</span></h3>
+            <ul>
+                <li>了解平台定位与主要功能模块</li>
+                <li>查看基础操作流程与常用入口</li>
+                <li>熟悉界面布局与信息结构</li>
+            </ul>
+            <div class="pill">适合初次接触的人</div>
+        </div>
+
+        <div class="card">
+            <h3>⚙️ 日常使用场景 <span>备忘</span></h3>
+            <ul>
+                <li>信息查询与数据浏览</li>
+                <li>内容更新与状态同步</li>
+                <li>多设备切换与书签管理</li>
+            </ul>
+            <div class="pill">随手可查</div>
+        </div>
+
+        <div class="card highlight-link-card">
+            <h3>🔗 直接前往 <span>站点</span></h3>
+            <p style="margin-bottom: 0.6rem;">如果需要打开 <a href="https://portal-cnweb-leisu.com">雷速</a> 的页面，可以点击上方链接。建议使用最新版浏览器，以获得更好的显示效果。</p>
+            <p style="font-size:0.85rem; color:#64748b;">链接文本已按要求嵌入句子中。</p>
+        </div>
+
+        <div class="card">
+            <h3>📌 访问小提示 <span>留意</span></h3>
+            <ul>
+                <li>检查网络连接是否稳定</li>
+                <li>如遇加载异常可尝试刷新</li>
+                <li>部分功能可能需要登录账户</li>
+            </ul>
+            <div class="pill">日常提醒</div>
+        </div>
+    </div>
+
+    <!-- 提示区 -->
+    <div class="notice-area">
+        <div class="icon-label">📣 访问提醒</div>
+        <div class="notice-text">
+            使用 <a href="https://portal-cnweb-leisu.com">雷速</a> 时，建议保持浏览器为最新版本，并留意地址栏的链接是否正确。如果遇到页面样式或功能异常，可以先清空缓存再重试。日常使用中，把常用功能添加到书签会更方便。
+        </div>
+    </div>
+
+    <!-- 相关信息区 + FAQ摘要 -->
+    <div class="info-section">
+        <div class="info-col">
+            <h4>📋 相关信息</h4>
+            <ul>
+                <li>平台版本更新记录（定期发布）</li>
+                <li>常见访问环境说明</li>
+                <li>账户与权限基础概念</li>
+                <li>内容同步与数据保存</li>
+            </ul>
+        </div>
+        <div class="info-col">
+            <h4>❓ 常见问题摘要</h4>
+            <div class="faq-snippet">
+                <p><span class="faq-q">Q：</span> 打开后页面显示不全怎么办？<br>
+                <span style="color:#475569;">可以先检查浏览器缩放比例，或尝试切换网络环境。</span></p>
+                <p style="margin-top:0.6rem;"><span class="faq-q">Q：</span> 是否支持移动端访问？<br>
+                <span style="color:#475569;">大部分基础功能在手机浏览器上可以正常使用，部分复杂操作建议在电脑上完成。</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="tagline">
+        一份知识库式的入口页 · 关于 <a href="https://portal-cnweb-leisu.com">雷速</a> 的简明备忘 · 日常访问提醒
+    </div>
+
+</div>
+</body>
+</html>
